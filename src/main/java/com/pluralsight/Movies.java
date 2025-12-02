@@ -16,11 +16,7 @@ public class Movies {
         loadConnection("sakila", args[0], args[1]);
         menuDisplay();
 
-//
-//        String query = "SELECT * FROM film f \n" +
-//                "JOIN film_actor fa ON (fa.film_id = f.film_id) \n" +
-//                "JOIN actor a ON (a.actor_id = fa.actor_id)\n" +
-//                " WHERE a.first_name LIKE ? AND a.last_name LIKE ? ;";
+
     }
     public static void loadConnection(String database, String username, String password) {
         BasicDataSource dataSource = new BasicDataSource();
@@ -73,5 +69,12 @@ public class Movies {
             }
 
         }
+    }
+
+    public static void displayActorMovies() throws SQLException{
+        String query = "SELECT * FROM film f \n" +
+                "JOIN film_actor fa ON (fa.film_id = f.film_id) \n" +
+                "JOIN actor a ON (a.actor_id = fa.actor_id)\n" +
+                " WHERE a.first_name LIKE ? AND a.last_name LIKE ? ;";
     }
 }
