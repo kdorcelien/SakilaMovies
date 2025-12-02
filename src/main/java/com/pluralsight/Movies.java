@@ -1,4 +1,7 @@
 package com.pluralsight;
 
-public class Smovies {
+public class Movies {
+    public static void main(String[] args) {
+
+    }
 }
