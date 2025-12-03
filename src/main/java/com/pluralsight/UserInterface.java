@@ -12,8 +12,7 @@ public class UserInterface {
         System.out.println("What do you want to do?\n" +
                 "\t1) Search actor by last name\n" +
                 "\t2) Search Movies made by an actor\n" +
-                "\t0) Exit\n" +
-                "\tSelect an option: ");
+                "\t0) Exit\n");
     }
 
     public static void displayActor(List<Actor> actors) {
@@ -64,6 +63,11 @@ public class UserInterface {
         } while (notChosen);
 
         return option;
+    }
+
+    public static String getUserString(String prompt) {
+        System.out.println(prompt);
+        return scanner.nextLine();
     }
 
     public static void waitForEnter() {
