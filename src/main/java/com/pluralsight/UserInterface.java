@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import com.pluralsight.models.*;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,12 +16,12 @@ public class UserInterface {
                 "\tSelect an option: ");
     }
 
-    public static void displayActor(List<Actor> actors){
-        if (actors.isEmpty()){
+    public static void displayActor(List<Actor> actors) {
+        if (actors.isEmpty()) {
             System.out.println("No Actors Found");
             return;
         }
-        for (Actor actor : actors){
+        for (Actor actor : actors) {
             System.out.println("Actor ID: " + actor.getActorId());
             System.out.println("First Name: " + actor.getFirstName());
             System.out.println("Last Name: " + actor.getLastName());
@@ -28,12 +29,12 @@ public class UserInterface {
         }
     }
 
-    public static void displayMovies(List<Film> movies){
-        if (movies.isEmpty()){
+    public static void displayMovies(List<Film> movies) {
+        if (movies.isEmpty()) {
             System.out.println("No Movies Found");
             return;
         }
-        for (Film movie : movies){
+        for (Film movie : movies) {
             System.out.println("Film ID: " + movie.getFilmId());
             System.out.println("Title: " + movie.getTitle());
             System.out.println("Description: " + movie.getDescription());
