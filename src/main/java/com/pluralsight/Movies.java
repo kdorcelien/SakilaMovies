@@ -100,7 +100,7 @@ public class Movies {
                     moviefound = true;
                     System.out.println("Title: " + results.getString("title"));
                     System.out.println("Description: " + results.getString("description"));
-                    System.out.println("Duration: " + results.getString("length"));
+                    System.out.println("Duration: " + results.getInt("length"));
                     System.out.println("Rating: " + results.getString("rating"));
                     System.out.println("--------------------------------------------------------");
                 }

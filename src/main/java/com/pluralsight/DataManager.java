@@ -34,12 +34,12 @@ public class DataManager {
         }
     }
 
-    public List<Actor> getActor(String lastname){
+    public List<Actor> getActor(String lastname) {
         String query = "SELECT * FROM actor WHERE last_name LIKE ? ";
         List<Actor> actors = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-        statement.setString(1, "%" + lastname + "%");
+            statement.setString(1, "%" + lastname + "%");
             try (ResultSet results = statement.executeQuery()) {
                 while (results.next()) {
                     Actor actor = new Actor(
@@ -47,18 +47,54 @@ public class DataManager {
                             results.getString("first_name"),
                             results.getString("last_name")
                     );
-                   actors.add(actor);
+                    actors.add(actor);
                 }
             }
 
-    } catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return actors;
     }
 
-    public List<Film> getFilmByActor(String firstname, String lastname){
+    public List<Film> getFilmByActor(String firstname, String lastname) throws SQLException {
+        String query = "SELECT * FROM film f " +
+                "JOIN film_actor fa ON (fa.film_id = f.film_id)" +
+                " JOIN actor a ON (a.actor_id = fa.actor_id)" +
+                " WHERE a.first_name LIKE ? AND a.last_name LIKE ? ;";
+        List<Film> movies = new ArrayList<>();
 
-        return List.of();
+        try (PreparedStatement statement = connection.prepareStatement(query);
+        ) {
+            statement.setString(1, "%" + firstname + "%");
+            statement.setString(2, "%" + lastname + "%");
+            try (ResultSet results = statement.executeQuery()) {
+
+                while (results.next()) {
+                    Film movie = new Film(
+                            results.getInt("film_id"),
+                            results.getString("title"),
+                            results.getString("description"),
+                            results.getInt("release_year"),
+                            results.getInt("length")
+                    );
+                    movies.add(movie);
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movies;
+    }
+
+    public void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
