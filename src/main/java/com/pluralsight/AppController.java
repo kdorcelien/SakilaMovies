@@ -21,9 +21,8 @@ public class AppController {
                     handleDisplayActors(lastname);
                 }
                 case 2 -> {
-                    String firstname = UserInterface.getUserString("Enter actor's first name: ").trim().toUpperCase();
-                    String lastname = UserInterface.getUserString("Enter actor's last name: ").trim().toUpperCase();
-                    handleDisplayMovies(firstname,lastname);
+                    int id = UserInterface.getUserOption("Enter actor's actor id: ");
+                    handleDisplayMovies(id);
                 }
                 case 0 -> exitProgram();
                 default -> {
@@ -43,8 +42,8 @@ public class AppController {
         UserInterface.waitAndContinue();
     }
 
-    public static void handleDisplayMovies(String firstname, String lastname) throws SQLException {
-        List<Film> movies = dataManager.getFilmByActor(firstname, lastname);
+    public static void handleDisplayMovies(int id) throws SQLException {
+        List<Film> movies = dataManager.getFilmByActor(id);
         UserInterface.displayMovies(movies);
         UserInterface.waitAndContinue();
     }

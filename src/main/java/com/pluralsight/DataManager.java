@@ -57,17 +57,16 @@ public class DataManager {
         return actors;
     }
 
-    public List<Film> getFilmByActor(String firstname, String lastname) throws SQLException {
+    public List<Film> getFilmByActor(int id) throws SQLException {
         String query = "SELECT * FROM film f " +
                 "JOIN film_actor fa ON (fa.film_id = f.film_id)" +
                 " JOIN actor a ON (a.actor_id = fa.actor_id)" +
-                " WHERE a.first_name LIKE ? AND a.last_name LIKE ? ;";
+                " WHERE a.actor_id = ? ;";
         List<Film> movies = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(query);
         ) {
-            statement.setString(1, "%" + firstname + "%");
-            statement.setString(2, "%" + lastname + "%");
+            statement.setInt(1, id);
             try (ResultSet results = statement.executeQuery()) {
 
                 while (results.next()) {
