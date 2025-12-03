@@ -1,7 +1,9 @@
 package com.pluralsight;
 
 import java.sql.*;
+
 import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.util.Scanner;
 
 public class Movies {
@@ -18,6 +20,7 @@ public class Movies {
 
 
     }
+
     public static void loadConnection(String database, String username, String password) {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl(url + database);
@@ -41,20 +44,28 @@ public class Movies {
                     "1) Search actor by last name\n" +
                     "2) Search Movies made by an actor\n" +
                     "0) Exit\n" +
-                    "Select an option: " );
+                    "Select an option: ");
 
             option = scan.nextInt();
             scan.nextLine();
 
 
-            switch (option) {}
+            switch (option) {
+                case 1 -> displayActor();
+                case 2 -> displayActorMovies();
+                case 3 -> {
+                    System.out.println("Au-Revoir");
+                    scan.close();
+                    connection.close();
+                }
+            }
         }
     }
 
     public static void displayActor() throws SQLException {
         String query = "SELECT * FROM actor WHERE last_name LIKE ? ";
         System.out.println("Enter Actor's Last name: ");
-        String name = scan.next();
+        String name = scan.nextLine().trim().toUpperCase();
 
         try (PreparedStatement statement = connection.prepareStatement(query);
         ) {
@@ -71,10 +82,32 @@ public class Movies {
         }
     }
 
-    public static void displayActorMovies() throws SQLException{
-        String query = "SELECT * FROM film f \n" +
-                "JOIN film_actor fa ON (fa.film_id = f.film_id) \n" +
-                "JOIN actor a ON (a.actor_id = fa.actor_id)\n" +
-                " WHERE a.first_name LIKE ? AND a.last_name LIKE ? ;";
+    public static void displayActorMovies() throws SQLException {
+        String query = "SELECT * FROM film f JOIN film_actor fa ON (fa.film_id = f.film_id) JOIN actor a ON (a.actor_id = fa.actor_id) WHERE a.first_name LIKE ? AND a.last_name LIKE ? ;";
+        System.out.println("Enter Actor's First name: ");
+        String firstName = scan.nextLine().trim().toUpperCase();
+        System.out.println("Enter Actor's Last name: ");
+        String lastName = scan.nextLine().trim().toUpperCase();
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+        ) {
+            statement.setString(1, "%" + firstName + "%");
+            statement.setString(2, "%" + lastName + "%");
+            try (ResultSet results = statement.executeQuery()) {
+
+                boolean moviefound = false;
+                while (results.next()) {
+                    moviefound = true;
+                    System.out.println("Title: " + results.getString("title"));
+                    System.out.println("Description: " + results.getString("description"));
+                    System.out.println("Duration: " + results.getString("length"));
+                    System.out.println("Rating: " + results.getString("rating"));
+                    System.out.println("--------------------------------------------------------");
+                }
+                if (!moviefound){
+                    System.out.println("No movies found for actor: " + firstName + " " + lastName);
+                }
+            }
+        }
     }
 }
