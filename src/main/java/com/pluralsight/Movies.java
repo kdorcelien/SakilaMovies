@@ -67,7 +67,7 @@ public class Movies {
         System.out.println("Enter Actor's Last name: ");
         String name = scan.nextLine().trim().toUpperCase();
 
-        try (PreparedStatement statement = connection.prepareStatement(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)
         ) {
             statement.setString(1, "%" + name + "%");
             try (ResultSet results = statement.executeQuery()) {
